@@ -3,7 +3,7 @@ var config = {};
 
 // User Configurable Options
 // *************************
-config.httpPort     = 8080;                 // The port which the http and socket server is on.
+config.httpPort     = 80;                 // The port which the http and socket server is on.
 config.sslEnable    = false;                // SSL - Note: if https is enabled, http is disabled.
 config.sslPort      = 8443;
 config.sslForwardFromHttp = true;           // Forces non-secure connections to be forwarded to the secure site. (recommended true)
@@ -40,7 +40,7 @@ config.logConsoleDate           = false;            // Prepend date and time to 
 config.logEasyRtcConsoleEnabled = true;             // Enable easyRTC general console logging
 config.logEasyRtcConsoleLevel   = 'info';           // ('debug'|'info'|'warn'|'error')
 
-config.logEasyRtcFileEnabled    = false;            // Enable easyRTC general file logging
+config.logEasyRtcFileEnabled    = true;            // Enable easyRTC general file logging
 config.logEasyRtcFileLevel      = 'info';           // ('debug'|'info'|'warn'|'error')
 config.logEasyRtcFileName       = ('./logs/easyrtc.log');// File location relative to easyRTC root
 
@@ -48,7 +48,7 @@ config.logEasyRtcFileName       = ('./logs/easyrtc.log');// File location relati
 config.logExpressConsoleEnabled = false;            // Enable Express console logging
 config.logExpressConsoleLevel   = 'info';           // ('debug'|'info'|'warn'|'error')
 
-config.logExpressFileEnabled    = false;            // Enable Express file log
+config.logExpressFileEnabled    = true;            // Enable Express file log
 config.logExpressFileLevel      = 'info';           // ('debug'|'info'|'warn'|'error')
 config.logExpressFileJson       = true;             // Enable JSON format in log file
 config.logExpressFileName       = ('./logs/express.log');// File location relative to easyRTC root
@@ -57,7 +57,7 @@ config.logExpressFileName       = ('./logs/express.log');// File location relati
 config.logSocketIoConsoleEnabled= true;             // Enable Socket.io console logging
 config.logSocketIoConsoleLevel  = 'warn';           // ('debug'|'info'|'warn'|'error')
 
-config.logSocketIoFileEnabled   = false;            // Enable Socket.io file logging
+config.logSocketIoFileEnabled   = true;            // Enable Socket.io file logging
 config.logSocketIoFileLevel     = 'warn';           // ('debug'|'info'|'warn'|'error')
 config.logSocketIoFileName      = ('./logs/socketio.log'); // File location relative to easyRTC root
 
@@ -77,12 +77,12 @@ config.defaultApplicationName = "default";
 config.enableDemos = true;
 
 // Socket.IO Settings
-config.socketIoClientGzipEnabled    = false;        // Gzip socket.io client. Enabling could cause problems on some Windows installations.
+config.socketIoClientGzipEnabled    = true;         // Gzip socket.io client. Enabling could cause problems on some Windows installations.
 config.socketIoClientMinifyEnabled  = true;         // Pre-minify socket.io javascript. This is done just once and greatly saves on bandwidth.
 config.socketIoClientEtagEnabled    = true;         // Allow client caching of the socket.io javascript library
 
 // Check for updates
-config.updateCheckEnable = true;
+config.updateCheckEnable = false;
 
 // **********************************
 // End of user configurable settings.
