@@ -64,6 +64,15 @@ httpApp.configure(function() {
     httpApp.use(express.logger({stream: logStream}));
     httpApp.use(express.static(__dirname + '/static/'));
 
+    // Provide easyRTC API files
+    httpApp.get("/easyrtc/easyrtc.js",      function(req, res) {res.sendfile('api/easyrtc.js',      {root:__dirname});});
+    httpApp.get("/easyrtc/easyrtc.css",     function(req, res) {res.sendfile('api/easyrtc.css',     {root:__dirname});});
+    httpApp.get("/easyrtc/img/powered_by_easyrtc.png",  function(req, res) {res.sendfile('api/img/powered_by_easyrtc.png',{root:__dirname});});
+
+    // Transition - Old locations of easyRTC API files
+    httpApp.get("/js/easyrtc.js",           function(req, res) {res.sendfile('api/easyrtc.js',      {root:__dirname});});
+    httpApp.get("/css/easyrtc.css",         function(req, res) {res.sendfile('api/easyrtc.css',     {root:__dirname});});
+
     if(easyrtcCfg.enableDemos) {
         httpApp.use("/demos", express.static(__dirname + "/demos"));
     }
@@ -138,7 +147,7 @@ io.sockets.on('connection', function (socket) {
     });
 
     // Incoming easyRTC commands: Used to forward webRTC negotiation details and manage server settings.
-    socket.on('easyRTCcmd', function(msg) {
+    socket.on('easyrtcCmd', function(msg) {
         logServer.debug('easyRTC: Socket [' + socket.id + '] command received', { label: 'easyrtc', easyrtcid:connectionEasyRtcId, data:msg});
         c.onEasyRtcCmd(io, socket, connectionEasyRtcId, msg);
     });

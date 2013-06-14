@@ -1,53 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>JSDoc: Source: easyrtc.js</title>
-    
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
-</head>
-
-<body>
-
-<div id="main">
-    
-    <h1 class="page-title">Source: easyrtc.js</h1>
-    
-    
-
-
-    
-    <section>
-        <article>
-            <pre class="prettyprint source"><code>/** @class
+/** @class
  *@version 0.8.1
- *&lt;p>
+ *<p>
  * Provides client side support for the easyRTC framework.
  * Please see the easyrtc_client_api.md and easyrtc_client_tutorial.md
- * for more details.&lt;/p>
+ * for more details.</p>
  *
- *&lt;/p>
+ *</p>
  *copyright Copyright (c) 2013, Priologic Software Inc.
- *All rights reserved.&lt;/p>
+ *All rights reserved.</p>
  *
- *&lt;p>
+ *<p>
  *Redistribution and use in source and binary forms, with or without
  *modification, are permitted provided that the following conditions are met:
- *&lt;/p>
- * &lt;ul>
- *   &lt;li> Redistributions of source code must retain the above copyright notice,
- *      this list of conditions and the following disclaimer. &lt;/li>
- *   &lt;li> Redistributions in binary form must reproduce the above copyright
+ *</p>
+ * <ul>
+ *   <li> Redistributions of source code must retain the above copyright notice,
+ *      this list of conditions and the following disclaimer. </li>
+ *   <li> Redistributions in binary form must reproduce the above copyright
  *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution. &lt;/li>
- *&lt;/ul>
- *&lt;p>
+ *      documentation and/or other materials provided with the distribution. </li>
+ *</ul>
+ *<p>
  *THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  *AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  *IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -59,7 +32,7 @@
  *CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  *ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *POSSIBILITY OF SUCH DAMAGE.
- *&lt;/p>
+ *</p>
  */
 
 
@@ -454,7 +427,7 @@ easyRTC.callCancelled = function(easyrtcid) {
  */
 easyRTC.setAppDefinedFields = function(fields) {
     var fieldAsString = JSON.stringify(fields);
-    if (JSON.stringify(fieldAsString).length &lt;= 128) {
+    if (JSON.stringify(fieldAsString).length <= 128) {
         easyRTC.appDefinedFields = JSON.parse(fieldAsString);
         easyRTC.updateConfigurationInfo();
     }
@@ -589,11 +562,11 @@ easyRTC.createObjectURL = function(mediaStream) {
 easyRTC.cleanId = function(idString) {
     var MAP = {
         '&': '&amp;',
-        '&lt;': '&lt;',
+        '<': '&lt;',
         '>': '&gt;'
     };
 
-    return idString.replace(/[&&lt;>]/g, function(c) {
+    return idString.replace(/[&<>]/g, function(c) {
         return MAP[c];
     });
 };
@@ -892,7 +865,7 @@ easyRTC.initMediaSource = function(successCallback, errorCallback) {
 
             var triesLeft = 30;
             var tryToGetSize = function() {
-                if (videoObj.videoWidth > 0 || triesLeft &lt; 0) {
+                if (videoObj.videoWidth > 0 || triesLeft < 0) {
                     easyRTC.nativeVideoWidth = videoObj.videoWidth;
                     easyRTC.nativeVideoHeight = videoObj.videoHeight;
                     if (easyRTC.videoFeatures.mandatory &&
@@ -1648,7 +1621,7 @@ easyRTC.connect = function(applicationName, successCallback, errorCallback) {
             var pieces = sd.sdp.split('\n');
             for (var i = pieces.length - 1; i >= 0; i--) {
                 if (pieces[i].indexOf("m=video") === 0) {
-                    for (var j = i; j &lt; i + 10 && pieces[j].indexOf("a=") === -1 &&
+                    for (var j = i; j < i + 10 && pieces[j].indexOf("a=") === -1 &&
                             pieces[j].indexOf("k=") === -1; j++) {
                     }
                     pieces.splice(j, 0, (easyRTC.videoBandwidthString + "\r"));
@@ -2192,7 +2165,7 @@ easyRTC.connect = function(applicationName, successCallback, errorCallback) {
 
         var flushCachedCandidates = function(caller) {
             if (queuedMessages[caller]) {
-                for (var i = 0; i &lt; queuedMessages[caller].candidates.length; i++) {
+                for (var i = 0; i < queuedMessages[caller].candidates.length; i++) {
                     processCandidate(queuedMessages[caller].candidates[i]);
                 }
                 delete queuedMessages[caller];
@@ -2229,7 +2202,7 @@ easyRTC.connect = function(applicationName, successCallback, errorCallback) {
             // greater valued easyrtcid will delete its pending call information and do a 
             // simple answer to the other caller's offer.
             //
-            if (easyRTC.acceptancePending[caller] && caller &lt; easyRTC.myEasyrtcid) {
+            if (easyRTC.acceptancePending[caller] && caller < easyRTC.myEasyrtcid) {
                 delete easyRTC.acceptancePending[caller];
                 if (queuedMessages[caller]) {
                     delete queuedMessages[caller];
@@ -2299,7 +2272,7 @@ easyRTC.connect = function(applicationName, successCallback, errorCallback) {
             for( id in actualData.connections) {
                 var item = actualData.connections[id];
                 if( item.isOwner && 
-                        item.clientConnectTime &lt; actualData.connections[easyRTC.myEasyrtcid].clientConnectTime) {     
+                        item.clientConnectTime < actualData.connections[easyRTC.myEasyrtcid].clientConnectTime) {     
                    isPrimaryOwner = false; 
                 }
             }
@@ -2339,7 +2312,7 @@ easyRTC.connect = function(applicationName, successCallback, errorCallback) {
                 easyRTC.peerConns[caller].wasAcceptedCB(true, caller);
             }
             easyRTC.peerConns[caller].startedAV = true;
-            for (var i = 0; i &lt; easyRTC.peerConns[caller].candidatesToSend.length; i++) {
+            for (var i = 0; i < easyRTC.peerConns[caller].candidatesToSend.length; i++) {
                 sendMessage(caller, "candidate", easyRTC.peerConns[caller].candidatesToSend[i]);
             }
 
@@ -2774,14 +2747,14 @@ easyRTC.initManaged = function(applicationName, monitorVideoId, videoIds, onRead
 
 
     easyRTC.getIthCaller = function(i) {
-        if (i &lt; 0 || i > videoIds.length) {
+        if (i < 0 || i > videoIds.length) {
             return null;
         }
         return getIthVideo(i).caller;
     };
 
     easyRTC.getSlotOfCaller = function(easyrtcid) {
-        for (var i = 0; i &lt; numPEOPLE; i++) {
+        for (var i = 0; i < numPEOPLE; i++) {
             if (easyRTC.getIthCaller(i) === easyrtcid) {
                 return i;
             }
@@ -2790,7 +2763,7 @@ easyRTC.initManaged = function(applicationName, monitorVideoId, videoIds, onRead
     };
 
     easyRTC.setOnStreamClosed(function(caller) {
-        for (var i = 0; i &lt; numPEOPLE; i++) {
+        for (var i = 0; i < numPEOPLE; i++) {
             var video = getIthVideo(i);
             if (video.caller === caller) {
                 easyRTC.setVideoObjectSrc(video, "");
@@ -2808,7 +2781,7 @@ easyRTC.initManaged = function(applicationName, monitorVideoId, videoIds, onRead
     // them in. 
     //
     easyRTC.setAcceptChecker(function(caller, helper) {
-        for (var i = 0; i &lt; numPEOPLE; i++) {
+        for (var i = 0; i < numPEOPLE; i++) {
             var video = getIthVideo(i);
             if (video.caller === "") {
                 helper(true);
@@ -2833,7 +2806,7 @@ easyRTC.initManaged = function(applicationName, monitorVideoId, videoIds, onRead
             refreshPane = null;
             return;
         }
-        for (i = 0; i &lt; numPEOPLE; i++) {
+        for (i = 0; i < numPEOPLE; i++) {
             video = getIthVideo(i);
             if (video.caller === caller) {
                 easyRTC.setVideoObjectSrc(video, stream);
@@ -2844,7 +2817,7 @@ easyRTC.initManaged = function(applicationName, monitorVideoId, videoIds, onRead
             }
         }
 
-        for (i = 0; i &lt; numPEOPLE; i++) {
+        for (i = 0; i < numPEOPLE; i++) {
             video = getIthVideo(i);
             if (!video.caller || video.caller === "") {
                 video.caller = caller;
@@ -2886,7 +2859,7 @@ easyRTC.initManaged = function(applicationName, monitorVideoId, videoIds, onRead
             parentDiv.appendChild(closeButton);
         };
 
-        for (var i = 0; i &lt; numPEOPLE; i++) {
+        for (var i = 0; i < numPEOPLE; i++) {
             addControls(getIthVideo(i));
         }
     }
@@ -2950,25 +2923,4 @@ easyRTC.initManaged = function(applicationName, monitorVideoId, videoIds, onRead
                 }
             }
     );
-};</code></pre>
-        </article>
-    </section>
-
-
-
-
-</div>
-
-<nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="easyRTC.html">easyRTC</a></li></ul>
-</nav>
-
-<br clear="both">
-
-<footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Thu Jun 13 2013 16:52:46 GMT-0700 (PDT)
-</footer>
-
-<script> prettyPrint(); </script>
-</body>
-</html>
+};
