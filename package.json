@@ -30,9 +30,7 @@
     "express"   : "*",
     "socket.io" : "*",
     
-    "async"     : "*",
-    "grace"     : "*",
-    "underscore": "*"
+    "grace"     : "*"
   },
 
   "analyze"     : false,

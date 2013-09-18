@@ -29,7 +29,5 @@ While EasyRTC requires Socket.io and Express, we've also found other modules whi
  - **Socket.IO** - A robust client and server websocket library with fallbacks in cases where websockets are unavailable (which should be rare as all current WebRTC browsers also support websockets).
 
 **Optional:**
- - **Async** - Allows cleaner and better organized asynchronous function handling with callbacks.
- - **Underscore** - A Javascript helper library, with many methods to handle common tasks.
  - **Grace** - Allows a graceful shutdown routine, by trapping Ctrl-c key or SIGINT. We use it to give all clients a hangup command.
 
