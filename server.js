@@ -7,6 +7,9 @@ var easyrtc     = require("easyrtc");       // EasyRTC module
 var grace       = require("grace");         // Graceful shutdown module
 
 
+// Set Process Name (visible in Linux; may be truncated to 16 characters)
+process.title = "node EasyRTC DemoServer";  
+
 // Setup and configure Express http server. Expect a subfolder called "static" to be the web root.
 var httpApp = express();
 httpApp.configure(function() {
