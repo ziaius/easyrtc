@@ -1,13 +1,9 @@
 {
-  "name": "easyrtc",
-
-  "version": "0.9.0b",
-
-  "homepage": "http://www.easyrtc.com/",
-
-  "author": "Priologic Software Inc. <info@priologic.com> (http://priologic.com/)",
-
-  "description": "easyRTC enables quick development of webRTC",
+  "name"        : "easyrtc_demo_server",
+  "version"     : "0.10.0",
+  "author"      : "Priologic Software Inc. <info@priologic.com> (http://priologic.com/)",
+  "description" : "Example server code for an EasyRTC demo server",
+  "homepage"    : "http://www.easyrtc.com/",
 
   "contributors": [ 
     "Doug Pelton <doug@priologic.com>",
@@ -15,38 +11,35 @@
     "Eric Davies <eric.davies@priologic.com>"
   ],
 
-  "keywords": [
-    "webRTC",
-    "easy",
-    "easyRTC",
-    "RTC",
-    "server"
-  ],
-
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/priologic/easyrtc.git"
+  "repository"  : {
+    "type"      : "git",
+    "url"       : "https://github.com/priologic/easyrtc.git#demo_site"
   },
 
-  "bugs": {
-    "url": "https://github.com/priologic/easyrtc/issues"
+  "bugs"        : {
+    "url"       : "https://github.com/priologic/easyrtc/issues"
   },
 
-  "scripts": {
-    "start": "node server.js"
+  "scripts"     : {
+    "start"     : "node server.js"
   },
 
   "dependencies" : {
-    "express" : "3.3.x",
-    "socket.io" : "0.9.x",
-    "winston" : "0.7.x"
+    "easyrtc"   : "git://github.com/priologic/easyrtc.git#alpha",
+    
+    "express"   : "*",
+    "socket.io" : "*",
+    
+    "async"     : "*",
+    "grace"     : "*",
+    "underscore": "*"
   },
 
-  "analyze": false,
+  "analyze"     : false,
 
-  "license": "BSD2",
+  "license"     : "BSD2",
 
   "engines": {
-    "node": ">=0.8"
+    "node"      : ">=0.8"
   }
 }
