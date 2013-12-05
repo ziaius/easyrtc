@@ -1,6 +1,6 @@
 {
   "name"        : "easyrtc_demo_server",
-  "version"     : "0.10.0",
+  "version"     : "1.0.0",
   "author"      : "Priologic Software Inc. <info@priologic.com> (http://priologic.com/)",
   "description" : "Example server code for an EasyRTC demo server",
   "homepage"    : "http://www.easyrtc.com/",
@@ -25,8 +25,7 @@
   },
 
   "dependencies" : {
-    "easyrtc"   : "git://github.com/priologic/easyrtc.git#alpha",
-    
+    "easyrtc"   : "*",
     "express"   : "*",
     "socket.io" : "*",
     
@@ -36,6 +35,8 @@
   "analyze"     : false,
 
   "license"     : "BSD2",
+
+  "private"     : true,
 
   "engines": {
     "node"      : ">=0.8"
