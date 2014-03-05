@@ -12,9 +12,8 @@ process.title = "node/EasyRTC/De";
 
 // Setup and configure Express http server. Expect a subfolder called "static" to be the web root.
 var httpApp = express();
-httpApp.configure(function() {
-    httpApp.use(express.static(__dirname + "/static/"));
-});
+
+httpApp.use(express.static(__dirname + "/static/"));
 
 // Start Express http server on port 80
 var webServer = http.createServer(httpApp).listen(80);
@@ -29,8 +28,17 @@ socketServer.enable('browser client etag');          // apply etag caching logic
 socketServer.enable('browser client gzip');          // gzip the file (THIS MAY CAUSE ERRORS ON SOME SYSTEMS)
 
 // Setting EasyRTC Options
-easyrtc.setOption("logLevel", "info");
+easyrtc.setOption("logLevel", "debug");
 easyrtc.setOption("logColorEnable", false);
+
+easyrtc.setOption("appIceServers", [
+      {url: "stun:stun.sipgate.net"},
+      {url: "stun:217.10.68.152"},
+      {url: "stun:stun.sipgate.net:10000"},
+      {url: "stun:217.10.68.152:10000"},
+      {url: "turn:192.155.86.24:443", "credential":"easyRTC@pass", username: "easyRTC"},
+      {url: "turn:192.155.86.24:443?transport=tcp", "credential":"easyRTC@pass", username: "easyRTC"}
+]);
 
 // Start EasyRTC server
 var easyrtcServer = easyrtc.listen(httpApp, socketServer, null, function(err, easyrtcPub) {
@@ -52,7 +60,7 @@ var easyrtcServer = easyrtc.listen(httpApp, socketServer, null, function(err, ea
         catch(err) {}
 
         // Run the EasyRTC Shutdown event which will safely disconnect users.
-        easyrtcPub.eventHandler.emit("shutdown", cb);
+        // easyrtcPub.eventHandler.emit("shutdown", cb);
     });
     graceApp.on ("exit", function (code){});
     graceApp.timeout (2000, function (cb){
