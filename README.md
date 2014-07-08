@@ -3,8 +3,6 @@ EasyRTC Demo Site
 
 The demo_site branch is a quick example of creating a web server which uses EasyRTC.
 
-Currently it is set to use EasyRTC as a module. This is a new feature present in the Beta branch.
-
 **Note:** The demo examples are tied to the EasyRTC version being used.
 
 
