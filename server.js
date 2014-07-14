@@ -1,72 +1,97 @@
+"use strict";
+
 // Load required modules
 var http        = require("http");          // Http server core module
 var express     = require("express");       // Web framework module
 var socketIo    = require("socket.io");     // Web socket module
 var easyrtc     = require("easyrtc");       // EasyRTC module
-
 var grace       = require("grace");         // Graceful shutdown module
+var morgan      = require("morgan");        // Express logging middleware
+
+var config      = require("./config");      // Application configuration
+var log         = require("./lib/log");     // Logging handlers
 
 
-// Set Process Name (visible in Linux; often truncated to 16 characters)
-process.title = "node/EasyRTC/De";  
-
-// Setup and configure Express http server. Expect a subfolder called "static" to be the web root.
-var httpApp = express();
-
-httpApp.use(express.static(__dirname + "/static/"));
-
-// Start Express http server on port 80
-var webServer = http.createServer(httpApp).listen(80);
+// Application scope variable to hold EasyRTC public object
+var easyrtcPub;
+var socketServer;
 
 
-// Start Socket.io so it attaches itself to Express server
-var socketServer = socketIo.listen(webServer, {"log level":1});
+// Set up graceful shutdown code
+var graceApp = grace.create();
 
-// Configure Socket.IO
-socketServer.enable('browser client minification');  // send minified client
-socketServer.enable('browser client etag');          // apply etag caching logic based on version number
-socketServer.enable('browser client gzip');          // gzip the file (THIS MAY CAUSE ERRORS ON SOME SYSTEMS)
+graceApp.on("start", function () {
+    // Set Process Name (visible in Linux; often truncated to 16 characters)
+    process.title = config.processTitle;
 
-// Setting EasyRTC Options
-easyrtc.setOption("logLevel", "debug");
-easyrtc.setOption("logColorEnable", false);
+    log.info("Starting EasyRTC Demo Server");
 
-easyrtc.setOption("appIceServers", [
-      {url: "stun:stun.sipgate.net"},
-      {url: "stun:217.10.68.152"},
-      {url: "stun:stun.sipgate.net:10000"},
-      {url: "stun:217.10.68.152:10000"},
-      {url: "turn:192.155.86.24:443", "credential":"easyRTC@pass", username: "easyRTC"},
-      {url: "turn:192.155.86.24:443?transport=tcp", "credential":"easyRTC@pass", username: "easyRTC"}
-]);
+    // Setup and configure Express http server. Expect a subfolder called "static" to be the web root.
+    var httpApp = express();
+    httpApp.use(morgan(log.expressLogMorgan));
+    if (config.serverLogExpressEnable) {
+        httpApp.use(morgan(log.serverLogMorgan));
+    }
+    httpApp.use(express.static(config.httpPublicRootFolder));
 
-// Start EasyRTC server
-var easyrtcServer = easyrtc.listen(httpApp, socketServer, null, function(err, easyrtcPub) {
+    easyrtc.on("log", function (level, logText, logFields) {
+        log.log(level, "EasyRTC: " + logText, logFields);
+    });
 
-    // Set up graceful shutdown code
-    graceApp = grace.create ();
-    graceApp.on ("start", function (){});
-    graceApp.on ("shutdown", function (cb){
-        try {
-            easyrtcPub.util.logInfo('Initiating shutdown of EasyRTC Server');
-        } catch(err) {}
-        
-        // Disallow new incoming connections
-        try {
-            if (io && io.server) {
-                io.server.close();
-            }
+    // Start Express http server
+    var webServer = http.createServer(httpApp).listen(config.httpPort);
+
+    // Start Socket.io so it attaches itself to Express server
+    socketServer = socketIo.listen(webServer, {"log level": config.socketIoLogLevel});
+
+    // Configure Socket.IO
+    if (config.socketIoClientMinify) {
+        socketServer.enable("browser client minification");  // send minified client
+    }
+    if (config.socketIoClientEtag) {
+        socketServer.enable("browser client etag");          // apply etag caching logic based on version number
+    }
+    if (config.socketIoClientGzip) {
+        socketServer.enable("browser client gzip");          // gzip the file (THIS MAY CAUSE ERRORS ON SOME SYSTEMS)
+    }
+
+    // Setting EasyRTC Options
+    easyrtc.setOption("logLevel", config.serverLogConsoleLevel);
+    easyrtc.setOption("logColorEnable", config.serverLogConsoleColorEnable);
+    easyrtc.setOption("appIceServers", config.easyrtcAppIceServers);
+
+    easyrtc.listen(httpApp, socketServer, null, function (err, newEasyrtcPub) {
+        if (err) {
+            throw err;
         }
-        catch(err) {}
+        easyrtcPub = newEasyrtcPub;
+    });
 
-        // Run the EasyRTC Shutdown event which will safely disconnect users.
-        // easyrtcPub.eventHandler.emit("shutdown", cb);
-    });
-    graceApp.on ("exit", function (code){});
-    graceApp.timeout (2000, function (cb){
-        //The timeout is used if the shutdown task takes more time than expected
-        cb ();
-    });
-    graceApp.start ();
-    
 });
+
+graceApp.on("shutdown", function (callback) {
+    // Disallow new incoming connections
+    try {
+        log.info("Shutting down EasyRTC Demo Server");
+
+        if (socketServer && socketServer.server) {
+            socketServer.server.close();
+        }
+    } catch (err) {
+        if (err) {
+            console.log("Error returned during shutdown.", err);
+        }
+    }
+
+    // Run the EasyRTC Shutdown event which will safely disconnect users.
+    // easyrtcPub.eventHandler.emit("shutdown", callback);
+    callback();
+});
+
+// graceApp.on("exit", function (code) {});
+graceApp.timeout(2000, function (callback) {
+    //The timeout is used if the shutdown task takes more time than expected
+    callback();
+});
+
+graceApp.start();
