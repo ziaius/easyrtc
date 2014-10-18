@@ -1,7 +1,9 @@
 "use strict";
 
 // Load required modules
+var fs          = require("fs");            // File system core module
 var http        = require("http");          // Http server core module
+var https       = require("https");        // Https server core module
 var express     = require("express");       // Web framework module
 var socketIo    = require("socket.io");     // Web socket module
 var easyrtc     = require("easyrtc");       // EasyRTC module
@@ -28,9 +30,9 @@ graceApp.on("start", function () {
 
     // Setup and configure Express http server. Expect a subfolder called "static" to be the web root.
     var httpApp = express();
-    httpApp.use(morgan(log.expressLogMorgan));
+    httpApp.use(morgan(log.expressLogMorgan.format, log.expressLogMorgan));
     if (config.serverLogExpressEnable) {
-        httpApp.use(morgan(log.serverLogMorgan));
+        httpApp.use(morgan(log.serverLogMorgan.format, log.serverLogMorgan));
     }
     httpApp.use(express.static(config.httpPublicRootFolder));
 
@@ -39,21 +41,23 @@ graceApp.on("start", function () {
     });
 
     // Start Express http server
-    var webServer = http.createServer(httpApp).listen(config.httpPort);
+    var webServer;
+    if (config.sslEnable){
+        webServer = https.createServer(
+            {
+                "key": fs.readFileSync(config.sslKeyFile),
+                "cert": fs.readFileSync(config.sslCertFile)
+            },
+            httpApp
+            ).listen(
+                config.webServerPort
+            );
+    } else {
+        webServer = http.createServer(httpApp).listen(config.webServerPort);
+    }
 
     // Start Socket.io so it attaches itself to Express server
     socketServer = socketIo.listen(webServer, {"log level": config.socketIoLogLevel});
-
-    // Configure Socket.IO
-    if (config.socketIoClientMinify) {
-        socketServer.enable("browser client minification");  // send minified client
-    }
-    if (config.socketIoClientEtag) {
-        socketServer.enable("browser client etag");          // apply etag caching logic based on version number
-    }
-    if (config.socketIoClientGzip) {
-        socketServer.enable("browser client gzip");          // gzip the file (THIS MAY CAUSE ERRORS ON SOME SYSTEMS)
-    }
 
     // Setting EasyRTC Options
     easyrtc.setOption("logLevel", config.serverLogConsoleLevel);

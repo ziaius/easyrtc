@@ -2,15 +2,9 @@
 
 var config = module.exports;
 
-config.httpPort = 80;
+config.httpPort     = 80;                           // Port used by http and socket server if sslEnable is false (default)
+config.httpsPort    = 443;                          // Port used by http and socket server if sslEnable is true
 config.httpPublicRootFolder = __dirname + "/static/";
-
-
-config.socketIoLogLevel = 1;
-config.socketIoClientMinify = true;
-config.socketIoClientEtag = true;
-config.socketIoClientGzip = true;
-
 config.processTitle = "node/EasyRTC/De";
 
 config.easyrtcAppIceServers = [
@@ -24,9 +18,13 @@ config.easyrtcAppIceServers = [
     {url: "turn:192.155.86.24:443?transport=tcp", "credential": "easyRTC@pass", username: "easyRTC"}
 ];
 
+config.sslEnable = false;
+config.sslKeyFile = "./dev/ssl_self_signed/server.key";
+config.sslCertFile = "./dev/ssl_self_signed/server.cert";
+
 // Logging options
 config.expressLogFile = "express.log";
-config.expressLogExpressFormat = "default";
+config.expressLogExpressFormat = "combined";
 
 config.serverLogConsoleLevel = "debug";
 config.serverLogConsoleTimestampEnable = true;
@@ -50,3 +48,6 @@ if (require("fs").existsSync("./config_override.js")) {
         }
     }
 }
+
+// Conditional options (based on other option values)
+config.webServerPort = (config.sslEnable?config.httpsPort:config.httpPort);

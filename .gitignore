@@ -3,6 +3,13 @@
 # node_modules from being committed and .log files.
 
 #################
+## JetBrains
+#################
+
+.idea
+
+
+#################
 ## Eclipse
 #################
 
