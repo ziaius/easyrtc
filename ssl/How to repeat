@@ -1,0 +1,8 @@
+How to repeat
+You can create a key and certificate yourself instead of downloading them from this page. This makes your key more secure. To generate a key:
+
+openssl genrsa -out ec2-54-213-239-107.us-west-2.compute.amazonaws.com.key 2048
+
+And the certificate:
+
+openssl req -new -x509 -key ec2-54-213-239-107.us-west-2.compute.amazonaws.com.key -out ec2-54-213-239-107.us-west-2.compute.amazonaws.com.cert -days 3650 -subj /CN=ec2-54-213-239-107.us-west-2.compute.amazonaws.com
