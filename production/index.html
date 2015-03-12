@@ -1,10 +1,125 @@
 <!DOCTYPE html>
 <html>
-<body>
+	<head>
+		<meta charset="utf-8">
+		<title>SoftDent WebRTC alpha client</title>
+		<meta name="description" content="WebRTC Audio/Video, Chat, File Transfer">
+		<meta name="viewport" content="width=device-width">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		
+		<script type="text/javascript">
+			//MDN PolyFil for IE8 (This is not needed if you use the jQuery version)
+			if (!Array.prototype.forEach){
+				Array.prototype.forEach = function(fun /*, thisArg */){
+				"use strict";
+				if (this === void 0 || this === null || typeof fun !== "function") throw new TypeError();
 
-<iframe src="http://ec2-54-213-239-107.us-west-2.compute.amazonaws.com/demos/demo_multiparty.html">
-  <p>Your browser does not support iframes.</p>
-</iframe>
+				var
+				t = Object(this),
+				len = t.length >>> 0,
+				thisArg = arguments.length >= 2 ? arguments[1] : void 0;
 
-</body>
+				for (var i = 0; i < len; i++)
+				if (i in t)
+					fun.call(thisArg, t[i], i, t);
+				};
+			}
+		</script>
+
+		<style type="text/css">
+			body {
+			    background-color:brown;
+			    margin: 0;
+			}
+
+			#wrapper {
+			     width: 100%;
+			     margin: 0 auto;
+			     position: relative;
+			     min-width: 510px;
+
+			}
+			#top{
+			    border: 1px solid white;
+			    color: white;
+			    margin:5px;
+			    padding: 10px;
+			    height:300px;			    
+			    min-width: 510px;
+			    resize: both;
+    			overflow: auto;
+			}
+			#leftcolumn, #rightcolumn{
+			    
+			    color: white;
+			    height:210px;
+			    width: 49%;
+			}
+			#leftcolumn {
+			    background-color: #111;
+			    float: left;
+			    margin-left:5px;
+
+			}
+			#rightcolumn {
+			    background-color: #777;
+			    float: right;
+			    margin-right:5px;
+			}			
+        </style>
+
+	</head>
+
+	<body>
+
+		<div id="top">
+			<iframe  name="audiovideo" src="demo_multiparty.html" width="100%" height="100%" scrolling="no"></iframe>
+		</div>
+
+
+		<div id="wrapper">
+			<div id="leftcolumn" >
+				<iframe name="messaging" src="demo_data_channel_messaging.html" width="100%"  height="100%" scrolling="no"></iframe>
+			</div>
+
+			<div id="rightcolumn">
+				<iframe name="filetransfer" src="demo_data_channel_filesharing.html" width="100%" height="100%" scrolling="no"></iframe>
+			</div>
+		</div>
+		
+		<p id="callback"> </p>
+		
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		<script type="text/javascript" src="js/iframeResizer.min.js"></script>
+		<script type="text/javascript">
+
+			iFrameResize({
+				log                     : true,                  // Enable console logging
+				enablePublicMethods     : true,                  // Enable methods within iframe hosted page
+				enableInPageLinks       : true,
+				resizedCallback         : function(messageData){ // Callback fn when resize is received
+					$('p#callback').html(
+						'<b>Frame ID:</b> '    + messageData.iframe.id +
+						' <b>Height:</b> '     + messageData.height +
+						' <b>Width:</b> '      + messageData.width +
+						' <b>Event type:</b> ' + messageData.type
+					);
+				},
+				messageCallback         : function(messageData){ // Callback fn when message is received
+					$('p#callback').html(
+						'<b>Frame ID:</b> '    + messageData.iframe.id +
+						' <b>Message:</b> '    + messageData.message
+					);
+					alert(messageData.message);
+				},
+				closedCallback         : function(id){ // Callback fn when iFrame is closed
+					$('p#callback').html(
+						'<b>IFrame (</b>'    + id +
+						'<b>) removed from page.</b>'
+					);
+				}
+			});
+
+		</script>
+	</body>
 </html>

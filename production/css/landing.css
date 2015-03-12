@@ -69,7 +69,18 @@ body {
 }
 
 #footer {
-    display: none;
+    font-size: small;
+    padding: 5px;
+    color:white;
+    min-height:60px;
+}
+#footer p {
+    margin: 0px;
+    color:white;
+    text-align:center;
+}
+#footer a {
+    color:white;
 }
 #license {
     font-size: x-small;

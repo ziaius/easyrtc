@@ -39,8 +39,7 @@ function connect() {
     easyrtc.setDataChannelCloseListener(closeListener);
     easyrtc.setPeerListener(addToConversation);
     easyrtc.setRoomOccupantListener(convertListToButtons);
-    easyrtc.connect("easyrtc.instantMessaging", loginSuccess, loginFailure);
-    // easyrtc.connect("easyrtc.dataMessaging", loginSuccess, loginFailure);
+    easyrtc.connect("easyrtc.dataMessaging", loginSuccess, loginFailure);
 }
 
 
@@ -96,14 +95,14 @@ function convertListToButtons(roomName, occupantList, isPrimary) {
                 sendStuffP2P(easyrtcid);
             };
         }(easyrtcid);
-        label = document.createTextNode("Send Message");
+        label = document.createTextNode("Send");
         button.appendChild(label);
         rowGroup.appendChild(button);
         otherClientDiv.appendChild(rowGroup);
         updateButtonState(easyrtcid);
     }
     if (!otherClientDiv.hasChildNodes()) {
-        otherClientDiv.innerHTML = "<em>Nobody else logged in to talk to...</em>";
+        otherClientDiv.innerHTML = "<em>lonely room</em>";
     }
 }
 
@@ -141,7 +140,7 @@ function startCall(otherEasyrtcid) {
         }
     }
     else {
-        easyrtc.showError("ALREADY-CONNECTED", "already connected to " + easyrtc.idToName(otherEasyrtcid));
+     // easyrtc.showError("ALREADY-CONNECTED", "already connected to " + easyrtc.idToName(otherEasyrtcid));
     }
 }
 
@@ -170,24 +169,4 @@ function loginSuccess(easyrtcid) {
 
 function loginFailure(errorCode, message) {
     easyrtc.showError(errorCode, "failure to login");
-}
-
-function addRoom(roomName, parmString, userAdded) {
-    if (!roomName) {
-        roomName = document.getElementById("roomToAdd").value;
-    }
-    var roomParms = null;
-    
-    
-    if (userAdded) {
-        console.log("calling joinRoom(" + roomName + ") because it was a user action ");
-
-        easyrtc.joinRoom(roomName, roomParms,
-                function() {
-                   /* we'll geta room entry event for the room we were actually added to */
-                },
-                function(errorCode, errorText, roomName) {
-                    easyrtc.showError(errorCode, errorText + ": room name was(" + roomName + ")");
-                });
-    }
 }

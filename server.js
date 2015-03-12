@@ -8,7 +8,7 @@ var easyrtc = require("easyrtc");   // EasyRTC external module
 
 // Setup and configure Express http server. Expect a subfolder called "static" to be the web root.
 var httpApp = express();
-httpApp.use(express.static(__dirname + "/production/iframe-example"));
+httpApp.use(express.static(__dirname + "/production"));
 // httpApp.use(express.static(__dirname + "/static/"));
 
 
