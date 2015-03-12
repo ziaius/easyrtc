@@ -2,8 +2,8 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>WebRTC in iFrames</title>
-		<meta name="description" content="iFrame message passing test">
+		<title>SoftDent WebRTC alpha client</title>
+		<meta name="description" content="WebRTC Audio/Video, Chat, File Transfer">
 		<meta name="viewport" content="width=device-width">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		
@@ -73,17 +73,17 @@
 	<body>
 
 		<div id="top">
-			<iframe  name="audiovideo" src="http://ec2-54-213-239-107.us-west-2.compute.amazonaws.com/demos/demo_multiparty.html" width="100%" height="100%" scrolling="no"></iframe>
+			<iframe  name="audiovideo" src="http://localhost:8080/demos/demo_multiparty.html" width="100%" height="100%" scrolling="no"></iframe>
 		</div>
 
 
 		<div id="wrapper">
 			<div id="leftcolumn" >
-				<iframe name="messaging" src="http://ec2-54-213-239-107.us-west-2.compute.amazonaws.com/demos/demo_data_channel_messaging.html" width="100%"  height="100%" scrolling="no"></iframe>
+				<iframe name="messaging" src="http://localhost:8080/demos/demo_data_channel_messaging.html" width="100%"  height="100%" scrolling="no"></iframe>
 			</div>
 
 			<div id="rightcolumn">
-				<iframe name="filetransfer" src="http://ec2-54-213-239-107.us-west-2.compute.amazonaws.com/demos/demo_data_channel_filesharing.html" width="100%" height="100%" scrolling="no"></iframe>
+				<iframe name="filetransfer" src="http://localhost:8080/demos/demo_data_channel_filesharing.html" width="100%" height="100%" scrolling="no"></iframe>
 			</div>
 		</div>
 		
