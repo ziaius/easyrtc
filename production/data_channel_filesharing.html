@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <!--skip-->
+        <title>EasyRTC Demo: Data Channel File-sharing</title>
+        <link rel="stylesheet" type="text/css" href="css/landing.css" />
+        <link rel="stylesheet" type="text/css" href="/easyrtc/easyrtc.css" />
+        <!--hide-->
+
+        <!-- Prettify Code -->
+        <script type="text/javascript" src="js/prettify/prettify.js"></script>
+        <link rel="stylesheet" type="text/css" href="js/prettify/prettify.css" />
+                <script type="text/javascript" src="js/prettify/loadAndFilter.js"></script>
+        <script type="text/javascript" src="js/prettify/jquery-1.9.1.min.js"></script>
+
+        <!--show-->
+        <!-- Assumes global locations for socket.io.js and easyrtc.js -->
+        <script src="/socket.io/socket.io.js"></script>
+        <script type="text/javascript" src="/easyrtc/easyrtc.js"></script>
+        <script type="text/javascript" src="/easyrtc/easyrtc_ft.js"></script>
+        <script type="text/javascript" src="js/data_channel_filesharing.js"></script>
+
+        <!--hide-->
+        <!-- Styles used within the demo -->
+        <style type="text/css">
+            .alert img {
+                float:left;
+                padding-right: 10px;
+            }
+
+            .peerblock {
+		width:100%;
+                min-width: 400px;
+                border-radius:2px;
+                border:1px solid gray;
+            }
+
+            .receiveBlock {
+                width: 500px;
+                margin:10px;
+                display: inline-block;
+            }
+            .dragndrop {
+                display: inline-block;
+                padding:2em;
+                margin: 2px;
+                border:2px solid black;
+                border-radius: 5px;
+            }
+            .dragndropStatus {
+                display: inline-block;
+            }
+            .connecting {
+                background-color: yellow;
+            }
+            .usesSockets {
+                background-color: pink;
+            }
+            .notConnected {
+                visibility:hidden;
+            }
+            .connected {
+                background-color: #e0ffe0;
+            }
+            .notConnected:hover {
+                margin: 1px;
+                border-width: 3px;
+            }
+            .connected:hover {
+                margin: 1px;
+                border-width:3px;
+            }
+            .connectButton {
+                padding:2em;
+            }
+
+        </style>
+        <!--show-->
+    </head>
+    <body onload="connect()">
+        <!--hide-->
+        <div id="container_not">
+            <div id="main_not">        
+                <!--show-->
+                <div id="iam">Obtaining ID...</div>
+                <div id="peerZone">  </div>
+                <!--hide-->
+            </div>
+        </div>
+        <!--show-->
+    </body>
+</html>
