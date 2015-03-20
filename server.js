@@ -6,12 +6,42 @@ var express = require("express");   // web framework external module
 var io      = require("socket.io"); // web socket external module
 var easyrtc = require("easyrtc");   // EasyRTC external module
 
+var path    = require("path");
+
 // Setup and configure Express http server. Expect a subfolder called "static" to be the web root.
 var httpApp = express();
 httpApp.use(express.static(__dirname + "/production"));
-// httpApp.use(express.static(__dirname + "/static/"));
 
 
+
+
+var roomObject = {};
+roomObject.room = "kambarelis";
+
+httpApp.get('/room_name',function(req, res){
+    res.json(roomObject);
+});
+
+httpApp.get('/av',function(req,res){
+    res.sendFile('multiparty.html', {root: path.join(__dirname+"/production") });
+});
+
+httpApp.get('/msg',function(req,res){
+    res.sendFile('data_channel_messaging.html', {root: path.join(__dirname+"/production") });
+});
+
+httpApp.get('/fs',function(req,res){
+    res.sendFile('data_channel_filesharing.html', {root: path.join(__dirname+"/production") });
+});
+
+httpApp.get('/',function(req,res){
+    res.sendFile('index.html', {root: path.join(__dirname+"/production") });
+});
+
+httpApp.get('/:room',function(req,res,next){
+    roomObject.room = req.params.room;
+    res.sendFile('home.html', {root: path.join(__dirname+"/production") });
+});
 // Start Express https server on port 8443
 // var webServer = https.createServer(
 // {
@@ -39,12 +69,15 @@ var rtc = easyrtc.listen(httpApp, socketServer,
             rtc.setOption("roomDefaultName", "SoftDent_room");
 
 
-        //     Creates a new application called MyApp with a default room named "SectorOne".
-        //     rtc.createApp(
-        //         "easyrtc.instantMessaging",
-        //         {"roomDefaultName":"SectorOne"},
-        //         myEasyrtcApp
-        //     );
+            // Creates a new application called MyApp with a default room named "SectorOne".
+            rtc.createApp(
+                "easyrtc.dataFileTransfer",
+                myEasyrtcApp
+            );
+             rtc.createApp(
+                "easyrtc.dataMessaging",
+                myEasyrtcApp
+            );
         }
 );
 

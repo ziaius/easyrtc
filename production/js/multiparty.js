@@ -689,39 +689,57 @@ function appInit() {
 
 
     easyrtc.setRoomOccupantListener(callEverybodyElse);
-    easyrtc.easyApp("easyrtc.multiparty", "box0", ["box1", "box2", "box3"], loginSuccess);
-    easyrtc.setPeerListener(messageListener);
-    easyrtc.setDisconnectListener( function() {
-        easyrtc.showError("LOST-CONNECTION", "Lost connection to signaling server");
-    });
-    easyrtc.setOnCall( function(easyrtcid, slot) {
-        console.log("getConnection count="  + easyrtc.getConnectionCount() );
-        boxUsed[slot+1] = true;
-        if(activeBox == 0 ) { // first connection
-            collapseToThumb();
-            document.getElementById('textEntryButton').style.display = 'block';
-        }
-        document.getElementById(getIdOfBox(slot+1)).style.visibility = "visible";
-        handleWindowResize();
-    });
+    
 
 
-    easyrtc.setOnHangup(function(easyrtcid, slot) {
-        boxUsed[slot+1] = false;
-        if(activeBox > 0 && slot+1 == activeBox) {
-            collapseToThumb();
-        }
-        setTimeout(function() {
-            document.getElementById(getIdOfBox(slot+1)).style.visibility = "hidden";
+    var room_name = "mano_kambarelis"; //prompt("room name:");
 
-            if( easyrtc.getConnectionCount() == 0 ) { // no more connections
-                expandThumb(0);
-                document.getElementById('textEntryButton').style.display = 'none';
-                document.getElementById('textentryBox').style.display = 'none';
+    var url = '/room_name';
+    $.getJSON(url)
+    .done(function( data ) {    
+       room_name = data.room;
+       easyrtc.joinRoom(room_name, 
+            function(roomName){ console.log("joined the room")},
+            function(errorCode, errorText, roomName){
+                console.log("failed to join the room", errorCode, errorText)}
+        );
+        easyrtc.easyApp("easyrtc.multiparty", "box0", ["box1", "box2", "box3"], loginSuccess);
+        easyrtc.setPeerListener(messageListener);
+        easyrtc.setDisconnectListener( function() {
+            easyrtc.showError("LOST-CONNECTION", "Lost connection to signaling server");
+        });
+        easyrtc.setOnCall( function(easyrtcid, slot) {
+            console.log("getConnection count="  + easyrtc.getConnectionCount() );
+            boxUsed[slot+1] = true;
+            if(activeBox == 0 ) { // first connection
+                collapseToThumb();
+                document.getElementById('textEntryButton').style.display = 'block';
             }
+            document.getElementById(getIdOfBox(slot+1)).style.visibility = "visible";
             handleWindowResize();
-        },20);
-    });
+        });
+
+
+        easyrtc.setOnHangup(function(easyrtcid, slot) {
+            boxUsed[slot+1] = false;
+            if(activeBox > 0 && slot+1 == activeBox) {
+                collapseToThumb();
+            }
+            setTimeout(function() {
+                document.getElementById(getIdOfBox(slot+1)).style.visibility = "hidden";
+
+                if( easyrtc.getConnectionCount() == 0 ) { // no more connections
+                    expandThumb(0);
+                    document.getElementById('textEntryButton').style.display = 'none';
+                    document.getElementById('textentryBox').style.display = 'none';
+                }
+                handleWindowResize();
+            },20);
+        });
+    });  
+
+
+   
 }
 
 

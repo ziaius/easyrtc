@@ -39,7 +39,22 @@ function connect() {
     easyrtc.setDataChannelCloseListener(closeListener);
     easyrtc.setPeerListener(addToConversation);
     easyrtc.setRoomOccupantListener(convertListToButtons);
-    easyrtc.connect("easyrtc.dataMessaging", loginSuccess, loginFailure);
+
+
+    var room_name = "mano_kambarelis"; //prompt("room name:");
+
+    var url = '/room_name';
+    $.getJSON(url)
+    .done(function( data ) {    
+       room_name = data.room;
+       easyrtc.joinRoom(room_name, 
+            function(roomName){ console.log("joined the room")},
+            function(errorCode, errorText, roomName){
+                console.log("failed to join the room", errorCode, errorText)}
+        );
+        easyrtc.connect("easyrtc.dataMessaging", loginSuccess, loginFailure);
+    });      
+    
 }
 
 

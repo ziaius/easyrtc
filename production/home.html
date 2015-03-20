@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>SoftDent WebRTC alpha client</title>
+		<meta name="description" content="WebRTC Audio/Video, Chat, File Transfer">
+		<meta name="viewport" content="width=device-width">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		
+
+
+		<style type="text/css">
+			body {
+			    background-color:brown;
+			    margin: 0;
+			}
+
+			#wrapper {
+			     width: 100%;
+			     position: relative;
+			     min-width: 750px;
+			}
+			#top{
+			    border: 1px solid white;
+			    color: white;
+			    margin:5px;
+			    padding: 10px;
+			    height:300px;
+			    min-width: 720px;			    
+			    overflow: hidden; 
+			    resize: vertical;
+			}
+			#leftcolumn, #rightcolumn{
+			    
+			    color: white;
+			    height:410px;
+			    width: 49%;
+			}
+			#leftcolumn {
+			    background-color: #111;
+			    float: left;
+			    margin-left:5px;
+
+			}
+			#rightcolumn {
+			    background-color: #777;
+			    float: right;
+			    margin-right:10px;
+			}			
+        </style>
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+	</head>
+
+	<body>
+
+		<div id="top">
+			<iframe  name="audiovideo" src="/multiparty.html" width="100%" height="100%" scrolling="no"></iframe>
+		</div>
+
+		<div id="wrapper">
+			<div id="leftcolumn" >
+				<iframe name="messaging" src="/data_channel_messaging.html" width="100%"  height="100%" scrolling="no"></iframe>
+			</div>
+
+			<div id="rightcolumn">
+				<iframe name="filetransfer" src="/data_channel_filesharing.html" width="100%" height="100%" scrolling="no"></iframe>
+			</div>
+		</div>
+
+		<div class="room"> </div>
+
+
+		<script>
+			var jqxhr = $.getJSON( "/room_name" )
+			  .done(function(data) {
+			    console.log( "second success" );
+			    if(data.room){
+			    	$('<p>'+data.room+'</p>').appendTo(".room");
+			    }
+			  })
+			  .fail(function() {
+			    console.log( "error" );
+			  })
+			  .always(function() {
+			    console.log( "complete" );
+			  });
+		</script> 
+		
+	</body>
+</html>
