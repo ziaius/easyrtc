@@ -38,9 +38,17 @@ httpApp.get('/',function(req,res){
     res.sendFile('index.html', {root: path.join(__dirname+"/production") });
 });
 
-httpApp.get('/:room',function(req,res,next){
-    roomObject.room = req.params.room;
-    res.sendFile('home.html', {root: path.join(__dirname+"/production") });
+httpApp.get('/:room',function(req,res,next){ 
+    var validation = req.params.room.match(/[a-z0-9_.-]{4,32}/i);
+    if (validation == req.params.room ) {
+        roomObject.room = req.params.room;
+        res.sendFile('home.html', {root: path.join(__dirname+"/production") });
+    } else {
+        roomObject.room = "kambarelis";
+        res.sendFile('index.html', {root: path.join(__dirname+"/production") });
+    }
+
+    
 });
 // Start Express https server on port 8443
 // var webServer = https.createServer(

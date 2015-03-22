@@ -10,15 +10,29 @@
     <link rel="stylesheet" href="css/dribbble-style.css">
 	<link rel="stylesheet" href="css/bootstrap.css">
     <script type="text/javascript" src="/js/prettify/jquery-1.9.1.min.js"></script>
+
+
+
+    <script type="text/javascript">
+
+
+      function enterRoom(){
+         window.location.href=document.getElementById("room_name").value;
+         event.preventDefault(); // disable normal form submit behavior
+        return false;
+      }
+
+  </script>
+
 </head>
 
 <body>
 
   <div id="bg">
   <div class="module">
-    <form class="form">
-      <input type="text" placeholder="Enter room name" value="" id="room_name" class="textbox" />
-      <input type="button" value="Start" class="btn btn-default button" />
+    <form class="form" onSubmit="JavaScript:enterRoom()" >
+      <input type="text" placeholder="Enter room name" value="" id="room_name" class="textbox" pattern="[a-zA-Z0-9_.-]{4,32}" title="Choose a name for your room from 4 to 32 characters long, no special characters are permited" />
+      <input type="submit" value="Start" class="btn btn-default button" />
     </form>
 	<span class="copy-right">SoftDent Ltd.</span>
   </div>
@@ -27,11 +41,7 @@
 <!-- <a href="http://dribbble.com/shots/1265587-Registration-Template-PSD?list=everyone" target="_blank">Design by: Asif Aleem</a> -->
 
 
-<script type="text/javascript">
-  $('.button').click(function(){
-     window.location.href=document.getElementById("room_name").value;
-  })
-</script>
+
 
 </body>
 
