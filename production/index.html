@@ -16,7 +16,7 @@
     <script type="text/javascript">
 
 
-      function enterRoom(){
+      function enterRoom(event){
          window.location.href=document.getElementById("room_name").value;
          event.preventDefault(); // disable normal form submit behavior
         return false;
@@ -30,7 +30,7 @@
 
   <div id="bg">
   <div class="module">
-    <form class="form" onSubmit="JavaScript:enterRoom()" >
+    <form class="form" onSubmit="JavaScript:enterRoom(event)" >
       <input type="text" placeholder="Enter room name" value="" id="room_name" class="textbox" pattern="[a-zA-Z0-9_.-]{4,32}" title="Choose a name for your room from 4 to 32 characters long, no special characters are permited" />
       <input type="submit" value="Start" class="btn btn-default button" />
     </form>
