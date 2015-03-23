@@ -10,9 +10,10 @@
 
 
 		<style type="text/css">
-			body {
-			    background-color:brown;
-			    margin: 0;
+			html, body {
+		    	height: 100%;
+				margin: 0px;
+				background-color:brown;			
 			}
 
 			#wrapper {
@@ -24,28 +25,30 @@
 			    border: 1px solid white;
 			    color: white;
 			    margin:5px;
-			    padding: 10px;
-			    height:300px;
-			    min-width: 720px;			    
+			    height:58%;
+			    min-width: 720px;
+			    padding: 10px;			    
+			    overflow: hidden; 
+			    resize: vertical;
+
+			}
+			#leftcolumn, #rightcolumn{
+			    border: 1px solid white;
+			    color: white;
+			    height: 370px;
+			    width: 48.5%;
+			    padding: 5px;			    
 			    overflow: hidden; 
 			    resize: vertical;
 			}
-			#leftcolumn, #rightcolumn{
-			    
-			    color: white;
-			    height:410px;
-			    width: 49%;
-			}
 			#leftcolumn {
-			    background-color: #111;
 			    float: left;
 			    margin-left:5px;
 
 			}
 			#rightcolumn {
-			    background-color: #777;
 			    float: right;
-			    margin-right:10px;
+			    margin-right:5px;
 			}			
         </style>
         <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
