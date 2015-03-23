@@ -8,6 +8,8 @@ var easyrtc = require("easyrtc");   // EasyRTC external module
 
 var path    = require("path");
 
+var validator = require('validator');
+var allowedCharacters = [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i' ];
 // Setup and configure Express http server. Expect a subfolder called "static" to be the web root.
 var httpApp = express();
 httpApp.use(express.static(__dirname + "/production"));
@@ -39,8 +41,9 @@ httpApp.get('/',function(req,res){
 });
 
 httpApp.get('/:room',function(req,res,next){ 
-    var validation = req.params.room.match(/[a-z0-9_.-]{4,32}/i);
-    if (validation == req.params.room ) {
+    var isValid = validator.isAlphanumeric(validator.blacklist(req.params.room,'-._'));  //req.params.room.match(/[a-z0-9_.-]{4,32}/i);
+    console.log(isValid, req.params.room);
+    if ( isValid && validator.isLength(req.params.room, 4,32)) {
         roomObject.room = req.params.room;
         res.sendFile('home.html', {root: path.join(__dirname+"/production") });
     } else {
