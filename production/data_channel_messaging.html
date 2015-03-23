@@ -21,19 +21,27 @@
                 float:left;
                 padding-right: 10px;
             }
+
             #sendMessageArea{
                 float:left;
-                width:100%;
+                width:99%;
                 padding-right:20px;
             }
             #sendMessageText{
-                width:100%;
+                width:98%;
             }
             #conversation {
-                width:100%;
-		height: 90px;
+                width:98%;
+                
+		        height: 100px;
                 border:solid 1px gray;
-		overflow-y:scroll;
+		        overflow-y:auto;
+            }
+            #otherClients{
+               width:80%; 
+            }
+            textarea {
+              overflow: auto;
             }
         </style>
         <!--show-->
@@ -50,7 +58,7 @@
 
                 <div id="sendMessageArea">
                     <div id="iam">Obtaining ID...</div>
-                    <textarea id="sendMessageText"></textarea>
+                    <textarea id="sendMessageText" placeholder="Be polite and nice!" wrap="off" rows="2"></textarea>
                     <div id="otherClients"></div>
                 </div>
             </div>
