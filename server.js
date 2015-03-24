@@ -69,7 +69,7 @@ httpApp.get('/fs',function(req,res){
 // });
 
 
-httpApp.get('/twat/:room/:username', function(req, res) {
+httpApp.get('/SD/:room/:username', function(req, res) {
     
         if ( isValidName(req.params.room) && isValidName(req.params.username) ) {
             roomObject.room = req.params.room;
