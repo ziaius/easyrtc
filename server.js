@@ -9,7 +9,7 @@ var easyrtc = require("easyrtc");   // EasyRTC external module
 var path    = require("path");
 
 var validator = require('validator');
-var allowedCharacters = [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i' ];
+var allowedCharacters = [ 'a' ,'b' ,'c' ,'d' ,'e' ,'f' ,'g' ,'h' ,'i' ,'j' ,'k' ,'l' ,'m' ,'n' ,'o' ,'p' ,'q' ,'r' ,'s' ,'t' ,'u' ,'v' ,'w' ,'x' ,'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' ];
 // Setup and configure Express http server. Expect a subfolder called "static" to be the web root.
 var httpApp = express();
 httpApp.use(express.static(__dirname + "/production"));
@@ -19,9 +19,29 @@ httpApp.use(express.static(__dirname + "/production"));
 
 var roomObject = {};
 roomObject.room = "kambarelis";
+var userObject = {};
+userObject.username = "";
+
+
+httpApp.get('/favicon.ico',function(req,res,next){    
+    console.log("got it! favicon.ico");
+});
 
 httpApp.get('/room_name',function(req, res){
+    console.log(roomObject);
     res.json(roomObject);
+     // var data = {
+    //     "fruit": {
+    //         "apple": req.params.fruitName,
+    //         "color": req.params.fruitColor
+    //     }
+    // }; 
+
+});
+
+httpApp.get('/my_name',function(req, res){
+    console.log(userObject);
+    res.json(userObject);
 });
 
 httpApp.get('/av',function(req,res){
@@ -32,27 +52,38 @@ httpApp.get('/msg',function(req,res){
     res.sendFile('data_channel_messaging.html', {root: path.join(__dirname+"/production") });
 });
 
+
 httpApp.get('/fs',function(req,res){
     res.sendFile('data_channel_filesharing.html', {root: path.join(__dirname+"/production") });
 });
 
-httpApp.get('/',function(req,res){
-    res.sendFile('index.html', {root: path.join(__dirname+"/production") });
-});
+// httpApp.get('/:room',function(req,res,next){ 
 
-httpApp.get('/:room',function(req,res,next){ 
-    var isValid = validator.isAlphanumeric(validator.blacklist(req.params.room,'-._'));  //req.params.room.match(/[a-z0-9_.-]{4,32}/i);
-    console.log(isValid, req.params.room);
-    if ( isValid && validator.isLength(req.params.room, 4,32)) {
-        roomObject.room = req.params.room;
-        res.sendFile('home.html', {root: path.join(__dirname+"/production") });
-    } else {
-        roomObject.room = "kambarelis";
-        res.sendFile('index.html', {root: path.join(__dirname+"/production") });
-    }
+//     if ( isValidName(req.params.room) ) {
+//         roomObject.room = req.params.room;
+//         res.sendFile('home.html', {root: path.join(__dirname+"/production") });
+//     } else {
+//         roomObject.room = "kambarelis";
+//         res.sendFile('index.html', {root: path.join(__dirname+"/production") });
+//     }
+// });
 
+
+httpApp.get('/twat/:room/:username', function(req, res) {
     
+        if ( isValidName(req.params.room) && isValidName(req.params.username) ) {
+            roomObject.room = req.params.room;
+            userObject.username = req.params.username;
+            res.sendFile('home.html', {root: path.join(__dirname+"/production") });
+        } else {
+            roomObject.room = "kambarelis";
+            userObject.username = "";
+            res.sendFile('index.html', {root: path.join(__dirname+"/production") });
+        }    
 });
+
+
+
 // Start Express https server on port 8443
 // var webServer = https.createServer(
 // {
@@ -99,4 +130,17 @@ var myEasyrtcApp = function(err, appObj) {
     appObj.setOption("roomDefaultFieldObj",
          {"roomColor":{fieldValue:"green", fieldOption:{isShared:true}}}
     );
+};
+
+var getRandomUsernama = function(){
+    var suffix = (Math.random() * 20| 0) + 1;
+    return "user_name"+suffix;
+};
+
+var isValidName = function(target){
+    var onlyValidCharacters = validator.isAlphanumeric(validator.blacklist(target,'-._'));  //req.params.room.match(/[a-z0-9_.-]{4,32}/i);
+    var hasValidLength = validator.isLength(target, 1,32);
+    return ( onlyValidCharacters && hasValidLength);
+
+    // return easyrtc.isNameValid(target);
 };

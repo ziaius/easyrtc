@@ -26,7 +26,7 @@
 var selfEasyrtcid = "";
 var connectList = {};
 var channelIsActive = {}; // tracks which channels are active
-
+var room_name = "mano_kambarelis"; //prompt("room name:");
 
 function connect() {
     easyrtc.enableDebug(false);
@@ -41,18 +41,24 @@ function connect() {
     easyrtc.setRoomOccupantListener(convertListToButtons);
 
 
-    var room_name = "mano_kambarelis"; //prompt("room name:");
+    
 
     var url = '/room_name';
     $.getJSON(url)
     .done(function( data ) {    
        room_name = data.room;
        easyrtc.joinRoom(room_name, 
-            function(roomName){ console.log("joined the room")},
+            function(roomName){ console.log("joined the room"+room_name)},
             function(errorCode, errorText, roomName){
                 console.log("failed to join the room", errorCode, errorText)}
         );
-        easyrtc.connect("easyrtc.dataMessaging", loginSuccess, loginFailure);
+        console.log("joined the room"+room_name);
+        $.getJSON('/my_name')
+        .done(function( data ) {        
+            easyrtc.setUsername(data.username);
+            easyrtc.connect("easyrtc.dataMessaging", loginSuccess, loginFailure);
+        console.log("my username is "+data.username);
+        });
     });      
     
 }
@@ -117,7 +123,7 @@ function convertListToButtons(roomName, occupantList, isPrimary) {
         updateButtonState(easyrtcid);
     }
     if (!otherClientDiv.hasChildNodes()) {
-        otherClientDiv.innerHTML = "<em>lonely room</em>";
+        otherClientDiv.innerHTML = "<em>it feels lonely @"+ room_name +"</em>";
     }
 }
 
@@ -178,7 +184,7 @@ function sendStuffP2P(otherEasyrtcid) {
 
 function loginSuccess(easyrtcid) {
     selfEasyrtcid = easyrtcid;
-    document.getElementById("iam").innerHTML = "I am " + easyrtcid;
+    document.getElementById("iam").innerHTML = "I am " + easyrtc.idToName(easyrtcid);
 }
 
 

@@ -17,7 +17,10 @@
 
 
       function enterRoom(event){
-         window.location.href=document.getElementById("room_name").value;
+        var url = 'twat/' + document.getElementById("room_name").value 
+                    + '/' + document.getElementById("user_name").value;
+
+         window.location.href=url;
          event.preventDefault(); // disable normal form submit behavior
         return false;
       }
@@ -31,7 +34,12 @@
   <div id="bg">
   <div class="module">
     <form class="form" onSubmit="JavaScript:enterRoom(event)" >
-      <input type="text" placeholder="Enter room name" value="" id="room_name" class="textbox" pattern="[a-zA-Z0-9_.-]{4,32}" title="Choose a name for your room from 4 to 32 characters long, no special characters are permited" />
+
+      <input type="text" placeholder="Your name" value="" id="user_name" class="textbox" pattern="[a-zA-Z0-9_.-]{4,32}" title="Choose a name for yourself from 4 to 32 characters long, no special characters are permited" />
+
+      <input type="text" placeholder="Room name" value="" id="room_name" class="textbox" pattern="[a-zA-Z0-9_.-]{4,32}" title="Choose a name for your room from 4 to 32 characters long, no special characters are permited" />
+
+
       <input type="submit" value="Start" class="btn btn-default button" />
     </form>
 	<span class="copy-right">SoftDent Ltd.</span>

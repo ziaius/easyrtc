@@ -566,13 +566,13 @@ function loginSuccess() {
 
 function cancelText() {
     document.getElementById('textentryBox').style.display = "none";
-    document.getElementById('textEntryButton').style.display = "block";
+    //ZIAI document.getElementById('textEntryButton').style.display = "block";
 }
 
 
 function sendText(e) {
     document.getElementById('textentryBox').style.display = "none";
-    document.getElementById('textEntryButton').style.display = "block";
+    //ZIAI document.getElementById('textEntryButton').style.display = "block";
     var stringToSend = document.getElementById('textentryField').value;
     if( stringToSend && stringToSend != "") {
         for(var i = 0; i < maxCALLERS; i++ ) {
@@ -696,45 +696,48 @@ function appInit() {
 
     var url = '/room_name';
     $.getJSON(url)
-    .done(function( data ) {    
-       room_name = data.room;
-       easyrtc.joinRoom(room_name, 
+    .done(function( data ) {
+       easyrtc.joinRoom(data.room, 
             function(roomName){ console.log("joined the room")},
             function(errorCode, errorText, roomName){
                 console.log("failed to join the room", errorCode, errorText)}
         );
-        easyrtc.easyApp("easyrtc.multiparty", "box0", ["box1", "box2", "box3"], loginSuccess);
-        easyrtc.setPeerListener(messageListener);
-        easyrtc.setDisconnectListener( function() {
-            easyrtc.showError("LOST-CONNECTION", "Lost connection to signaling server");
-        });
-        easyrtc.setOnCall( function(easyrtcid, slot) {
-            console.log("getConnection count="  + easyrtc.getConnectionCount() );
-            boxUsed[slot+1] = true;
-            if(activeBox == 0 ) { // first connection
-                collapseToThumb();
-                document.getElementById('textEntryButton').style.display = 'block';
-            }
-            document.getElementById(getIdOfBox(slot+1)).style.visibility = "visible";
-            handleWindowResize();
-        });
-
-
-        easyrtc.setOnHangup(function(easyrtcid, slot) {
-            boxUsed[slot+1] = false;
-            if(activeBox > 0 && slot+1 == activeBox) {
-                collapseToThumb();
-            }
-            setTimeout(function() {
-                document.getElementById(getIdOfBox(slot+1)).style.visibility = "hidden";
-
-                if( easyrtc.getConnectionCount() == 0 ) { // no more connections
-                    expandThumb(0);
-                    document.getElementById('textEntryButton').style.display = 'none';
-                    document.getElementById('textentryBox').style.display = 'none';
+        $.getJSON('/my_name')
+        .done(function( data ) {        
+            easyrtc.setUsername(data.username);
+            easyrtc.easyApp("easyrtc.multiparty", "box0", ["box1", "box2", "box3"], loginSuccess);
+            easyrtc.setPeerListener(messageListener);
+            easyrtc.setDisconnectListener( function() {
+                easyrtc.showError("LOST-CONNECTION", "Lost connection to signaling server");
+            });
+            easyrtc.setOnCall( function(easyrtcid, slot) {
+                console.log("getConnection count="  + easyrtc.getConnectionCount() );
+                boxUsed[slot+1] = true;
+                if(activeBox == 0 ) { // first connection
+                    collapseToThumb();
+                    //ZIAI document.getElementById('textEntryButton').style.display = 'block';
                 }
+                document.getElementById(getIdOfBox(slot+1)).style.visibility = "visible";
                 handleWindowResize();
-            },20);
+            });
+
+
+            easyrtc.setOnHangup(function(easyrtcid, slot) {
+                boxUsed[slot+1] = false;
+                if(activeBox > 0 && slot+1 == activeBox) {
+                    collapseToThumb();
+                }
+                setTimeout(function() {
+                    document.getElementById(getIdOfBox(slot+1)).style.visibility = "hidden";
+
+                    if( easyrtc.getConnectionCount() == 0 ) { // no more connections
+                        expandThumb(0);
+                        document.getElementById('textEntryButton').style.display = 'none';
+                        document.getElementById('textentryBox').style.display = 'none';
+                    }
+                    handleWindowResize();
+                },20);
+            });
         });
     });  
 

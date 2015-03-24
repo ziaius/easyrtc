@@ -69,16 +69,19 @@ function connect() {
 
     var room_name = "mano_kambarelis"; //prompt("room name:");
 
-    var url = '/room_name';
-    $.getJSON(url)
-    .done(function( data ) {    
-       room_name = data.room;
-       easyrtc.joinRoom(room_name, 
+    $.getJSON('/room_name')
+    .done(function( data ) {   
+        easyrtc.joinRoom(data.room, 
             function(roomName){ console.log("joined the room")},
             function(errorCode, errorText, roomName){
                 console.log("failed to join the room", errorCode, errorText)}
         );
-        easyrtc.connect("easyrtc.dataFileTransfer", loginSuccess, loginFailure);
+
+        $.getJSON('/my_name')
+        .done(function( data ) {        
+            easyrtc.setUsername(data.username);
+            easyrtc.connect("easyrtc.dataFileTransfer", loginSuccess, loginFailure);
+        });
     });      
 
     
@@ -214,7 +217,7 @@ function convertListToButtons(roomName, occupants, isPrimary) {
             var peerBlock = document.createElement("div");
             peerBlock.id = buildPeerBlockName(easyrtcid);
             peerBlock.className = "peerblock";
-            peerBlock.appendChild(document.createTextNode(" For peer " + easyrtcid));
+            peerBlock.appendChild(document.createTextNode(" For peer " + easyrtc.idToName(easyrtcid)));
             peerBlock.appendChild(document.createElement("br"));
             peerBlock.appendChild(buildDropDiv(easyrtcid));
             peerBlock.appendChild(buildReceiveDiv(easyrtcid));
@@ -297,7 +300,7 @@ function blobAcceptor(otherGuy, blob, filename) {
 
 function loginSuccess(easyrtcid) {
     selfEasyrtcid = easyrtcid;
-    document.getElementById("iam").innerHTML = "I am " + easyrtcid;
+    document.getElementById("iam").innerHTML = "I am " + easyrtc.idToName(easyrtcid);
     easyrtc_ft.buildFileReceiver(acceptRejectCB, blobAcceptor, receiveStatusCB);
 }
 
