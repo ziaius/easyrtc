@@ -70,11 +70,29 @@ httpApp.get('/fs',function(req,res){
 
 
 httpApp.get('/SD/:room/:username', function(req, res) {
-    
+   
+	 
         if ( isValidName(req.params.room) && isValidName(req.params.username) ) {
+	   var currentdate = new Date(); 
+	   var datetime =   currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/" 
+                + currentdate.getFullYear() + " @ "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+                + currentdate.getSeconds();
+
+	    var conn_info = datetime
+	    	+ ' ' + req.connection.remoteAddress // || req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.connection.socket.remoteAddress
+		+ ' ' + req.params.room
+		+ ' ' + req.params.username
+		+ '\n';
             roomObject.room = req.params.room;
             userObject.username = req.params.username;
             res.sendFile('home.html', {root: path.join(__dirname+"/production") });
+	    
+	    fs.appendFile('../conn_info.txt', conn_info, function (err) {
+		console.log('error loging connection info:\n',err); 
+	    });
         } else {
             roomObject.room = "kambarelis";
             userObject.username = "";
