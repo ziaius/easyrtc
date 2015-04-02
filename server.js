@@ -7,6 +7,8 @@ var io      = require("socket.io"); // web socket external module
 var easyrtc = require("easyrtc");   // EasyRTC external module
 
 var path    = require("path");
+// Add request module to call XirSys servers
+var request = require("request");
 
 var validator = require('validator');
 var allowedCharacters = [ 'a' ,'b' ,'c' ,'d' ,'e' ,'f' ,'g' ,'h' ,'i' ,'j' ,'k' ,'l' ,'m' ,'n' ,'o' ,'p' ,'q' ,'r' ,'s' ,'t' ,'u' ,'v' ,'w' ,'x' ,'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' ];
@@ -118,6 +120,39 @@ var socketServer = io.listen(webServer, {"log level":1});
 //easyrtc.setOption("demosEnable", false);
 //easyrtc.setOption("roomDefaultName", "SoftDent_room")
 
+easyrtc.on("getIceConfig", function(connectionObj, callback) {
+  
+    // This object will take in an array of XirSys STUN and TURN servers
+    var iceConfig = [];
+
+    request.post('https://api.xirsys.com/getIceServers', {
+        form: {
+            ident: "ziai",
+            secret: "d8d43a90-4300-47fc-89b7-17ffe30bfc74",
+            //domain: "127.0.0.1",
+            domain: "ec2-54-213-239-107.us-west-2.compute.amazonaws.com",
+            application: "multiparty", //only for multiparty application
+            room: "default", //only with this room 
+            secure: 1
+        },
+        json: true
+    },
+    function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            // body.d.iceServers is where the array of ICE servers lives
+            iceConfig = body.d.iceServers;  
+            console.log(iceConfig);
+            callback(null, iceConfig);
+        }
+        else {
+            console.log("error >");
+            console.log(error);
+            console.log("error <");
+        }
+    });
+});
+
+
 // Start EasyRTC server
 var rtc = easyrtc.listen(httpApp, socketServer,
         {logLevel:"debug", logDateEnable:false} 
@@ -126,7 +161,7 @@ var rtc = easyrtc.listen(httpApp, socketServer,
 
 
         	// After the server has started, we can still change the default room name
-            rtc.setOption("roomDefaultName", "SoftDent_room");
+            rtc.setOption("roomDefaultName", "SoftDent-room");
 
 
             // Creates a new application called MyApp with a default room named "SectorOne".
