@@ -69,7 +69,7 @@ function addToConversation(who, msgType, content) {
     content = content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     content = content.replace(/\n/g, '<br />');
     document.getElementById('conversation').innerHTML +=
-            "<b>" + who + ":</b>&nbsp;" + content + "<br />";
+            "<b>" + easyrtc.idToName(who) + ":</b>&nbsp;" + content + "<br />";
 }
 
 
