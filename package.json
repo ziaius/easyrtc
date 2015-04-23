@@ -35,7 +35,13 @@
     "underscore": "1.5.x",    
     "easyrtc"   : "1.0.x",
     "express"   : "*",
-    "socket.io" : "0.9.x"
+    "express-session"  : "*",
+    "socket.io" : "0.9.x",
+    "validator" : "3.34.x",
+    "request"   : "2.54.x",
+    "serve-favicon" : "2.2.x",
+    "crypto"  : "*",
+    "body-parser" : "1.12.x"
   },
 
   "analyze"     : false,
