@@ -4367,6 +4367,14 @@ var Easyrtc = function() {
                 dataEnabled = false;
             }
             pc.onnegotiationneeded = function(event) {
+
+                var usage = window.callStats.fabricUsage.multiplex;
+                window.callStats.addNewFabric(pc, 'public-av', usage, 'meeting.cluum.lt', function(err, msg) {
+                    console.log("Monitoring status: "+ err + " msg: " + msg);
+                  }
+                );
+
+
                 if( peerConns[otherUser].enableNegotiateListener ) {
                     pc.createOffer(function(sdp) {
                         if (sdpLocalFilter) {
@@ -4377,6 +4385,11 @@ var Easyrtc = function() {
                         }, function() {
                         });
                     }, function(errorObj) {
+                        // fabricSetupFailed
+                        var thisFabricEvent = window.callStats.fabricEvent.fabricSetupFailed;
+                        var conferenceID = 'meeting.cluum.lt';
+                        window.callStats.sendFabricEvent(pc, thisFabricEvent, conferenceID)
+
                         console.log("unexpected error in creating offer");
                     });
                 }
@@ -4438,6 +4451,10 @@ var Easyrtc = function() {
                         }
 
                     }
+                    // fabricSetupFailed
+                    var thisFabricEvent = window.callStats.fabricEvent.fabricTerminated;
+                    var conferenceID = 'meeting.cluum.lt';
+                    window.callStats.sendFabricEvent(pc, thisFabricEvent, conferenceID)
                     return null;
                 }
                 //                var remoteStreams = peerConns[i].pc.getRemoteStreams();
@@ -6322,6 +6339,7 @@ var Easyrtc = function() {
         connectToWSServer(successCallback, errorCallback);
     };
 };
+
 window.easyrtc = new Easyrtc();
 
 var easyrtc_constantStrings = {
