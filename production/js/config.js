@@ -50,16 +50,18 @@ require(['multiparty', 'callstats'], function(multiparty,callstats){
     var AppSecret; 
 
     $.getJSON('/js/callstats.json', function(jd) {
-         AppID = jd.AppID;
-         AppSecret = jd.AppSecret;
-          var UserID = "public-av";
-    //var callStats = new callstats($,io,jsSHA);
-    function initCallback (err, msg) {
-      console.log("Initializing Status: err="+err+" msg="+msg);
-    }
-    //userID is generated or given by the origin server
-    callstats.initialize(AppID, AppSecret, UserID, initCallback);
-    window.callStats = callstats;
+        if (jd.enabled == true){
+            AppID = jd.AppID;
+            AppSecret = jd.AppSecret;
+            var UserID = "public-av";
+            //var callStats = new callstats($,io,jsSHA);
+            function initCallback (err, msg) {
+              console.log("Initializing Status: err="+err+" msg="+msg);
+            }
+            //userID is generated or given by the origin server
+            callstats.initialize(AppID, AppSecret, UserID, initCallback);
+            window.callStats = callstats;
+        }
     appInit()
     });
    

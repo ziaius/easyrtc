@@ -4387,10 +4387,11 @@ var Easyrtc = function() {
                         });
                     }, function(errorObj) {
                         // fabricSetupFailed
-                        var thisFabricEvent = window.callStats.fabricEvent.fabricSetupFailed;
-                        var conferenceID = 'meeting.cluum.lt';
-                        window.callStats.sendFabricEvent(pc, thisFabricEvent, conferenceID)
-
+                        if ( typeof window.callStats !== 'undefined') { 
+                          var thisFabricEvent = window.callStats.fabricEvent.fabricSetupFailed;
+                          var conferenceID = 'meeting.cluum.lt';
+                          window.callStats.sendFabricEvent(pc, thisFabricEvent, conferenceID)
+                        }
                         console.log("unexpected error in creating offer");
                     });
                 }
@@ -4452,10 +4453,12 @@ var Easyrtc = function() {
                         }
 
                     }
-                    // fabricSetupFailed
-                    var thisFabricEvent = window.callStats.fabricEvent.fabricTerminated;
-                    var conferenceID = 'meeting.cluum.lt';
-                    window.callStats.sendFabricEvent(pc, thisFabricEvent, conferenceID)
+                    if ( typeof window.callStats !== 'undefined') { 
+                      // fabricTerminated
+                      var thisFabricEvent = window.callStats.fabricEvent.fabricTerminated;
+                      var conferenceID = 'meeting.cluum.lt';
+                      window.callStats.sendFabricEvent(pc, thisFabricEvent, conferenceID)
+                    }
                     return null;
                 }
                 //                var remoteStreams = peerConns[i].pc.getRemoteStreams();
