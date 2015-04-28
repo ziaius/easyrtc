@@ -4367,12 +4367,13 @@ var Easyrtc = function() {
                 dataEnabled = false;
             }
             pc.onnegotiationneeded = function(event) {
-
-                var usage = window.callStats.fabricUsage.multiplex;
-                window.callStats.addNewFabric(pc, 'public-av', usage, 'meeting.cluum.lt', function(err, msg) {
-                    console.log("Monitoring status: "+ err + " msg: " + msg);
-                  }
-                );
+                if ( typeof window.callStats !== 'undefined') { 
+                  var usage = window.callStats.fabricUsage.multiplex;
+                  window.callStats.addNewFabric(pc, 'public-av', usage, 'meeting.cluum.lt', function(err, msg) {
+                      console.log("Monitoring status: "+ err + " msg: " + msg);
+                    }
+                  );
+                }
 
 
                 if( peerConns[otherUser].enableNegotiateListener ) {
