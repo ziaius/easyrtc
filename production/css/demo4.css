@@ -5,7 +5,7 @@
             float:left;
             width:250px;
             text-align:center;
-            border: 2px solid black;
+            border: 2px  #CBD1B1;
         }
         #otherClients {
             height:200px;
@@ -15,7 +15,7 @@
             height:225px;
             width:300px;
             float:left;
-            border:1px solid gray;
+            border:1px  gray;
             margin-left:10px;
         }
         .callerVideoBox {
@@ -24,7 +24,7 @@
         .callerVideo {
             height:225px;
             width:300px;
-            border:1px solid gray;
+            border:1px  gray;
             margin-left:10px;
         }
         .easyrtc_closeButton {

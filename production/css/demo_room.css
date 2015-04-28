@@ -38,6 +38,18 @@ body {
     opacity:0.7;
 }
 
+
+   
+.button:hover {
+   border-top-color: #2f60b5;
+   background: #2f60b5;
+   color: #ccc;
+   }
+.button:active {
+   border-top-color: #1b435e;
+   background: #1b435e;
+   }
+
 #killButton:hover {
     opacity:1.0;
 }
