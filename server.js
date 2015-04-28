@@ -57,7 +57,7 @@ app.get('/room_name',function(req, res){
 	    res.json(req.session.roomObject);
 	} else {
 		req.session.roomObject = {}
-        req.session.roomObject.room = 'public'+randomValueBase64(4);
+        req.session.roomObject.room = 'public';//+randomValueBase64(4);
         res.json(req.session.roomObject);
 	}
     // var data = {
