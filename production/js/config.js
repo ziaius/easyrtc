@@ -8,7 +8,7 @@ requirejs.config({
 
      easy_jq: "/js/prettify/jquery-1.9.1.min",
      easyrtc: "/js/easyrtc",
-     io: "http://localhost:8080/socket.io/socket.io",
+     io: "/socket.io/socket.io.js",
      multiparty: "/js/multiparty"
  },
 
