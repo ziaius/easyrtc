@@ -70,6 +70,8 @@ function addToConversation(who, msgType, content) {
     content = content.replace(/\n/g, '<br />');
     document.getElementById('conversation').innerHTML +=
             "<b>" + easyrtc.idToName(who) + ":</b>&nbsp;" + content + "<br />";
+    // Auto scroll down the text area
+    $("#conversation").scrollTop($("#conversation")[0].scrollHeight);
 }
 
 

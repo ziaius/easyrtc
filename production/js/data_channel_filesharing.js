@@ -217,7 +217,7 @@ function convertListToButtons(roomName, occupants, isPrimary) {
             var peerBlock = document.createElement("div");
             peerBlock.id = buildPeerBlockName(easyrtcid);
             peerBlock.className = "peerblock";
-            peerBlock.appendChild(document.createTextNode(" For peer " + easyrtc.idToName(easyrtcid)));
+            peerBlock.appendChild(document.createTextNode(" Send file to user: " + easyrtc.idToName(easyrtcid)));
             peerBlock.appendChild(document.createElement("br"));
             peerBlock.appendChild(buildDropDiv(easyrtcid));
             peerBlock.appendChild(buildReceiveDiv(easyrtcid));
