@@ -131,7 +131,8 @@ button:active {
    background: #0093f5;
 }
 button:disabled {
-   visibility: hidden;
+   background-color: grey;
+   color: grey;
 }
 
 hr {

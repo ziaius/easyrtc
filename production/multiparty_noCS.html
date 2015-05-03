@@ -11,14 +11,14 @@
         <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/1.5.0/sha.js"></script>
         <script src="https://api.callstats.io/static/callstats.min.js"></script>
-
+-->
         <script type="application/javascript" src="/js/prettify/jquery-1.9.1.min.js"></script>
         <script type="application/javascript" src="js/easyrtc.js"></script>
-        script src="/socket.io/socket.io.js"></script
+        <script src="/socket.io/socket.io.js"></script>
         <link rel="stylesheet" type="text/css" href="css/demo_room.css" />
         <script type="application/javascript" src="js/multiparty.js"></script>
-        -->
-        <script src="/socket.io/socket.io.js"></script>
+        
+        <!--script src="/socket.io/socket.io.js"></script-->
         <link rel="stylesheet" type="text/css" href="css/demo_room.css" />
         
        
@@ -37,7 +37,7 @@
 	</style>
     </head>
 
-    <body><!-- onload="appInit()">-->
+    <body onload="appInit()">
         <div id="fullpage"  class="boxCommon" style="background-image:url(images/bg_dark.png)">
             <video id="box0" class="transit boxCommon thumbCommon easyRTCMirror" muted="muted" volume="0" ></video>
             <video id="box1" class="transit boxCommon thumbCommon" style="visibility:hidden"></video>
@@ -54,13 +54,11 @@
             <img id="textEntryButton" class="transit boxCommon" onclick ="showTextEntry()" src="images/textEntry.png" style="z-index:3;display:none" alt="text button" />
         </div>
 
+        <!--script data-main="js/config.js" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.15/require.js">
 
-        <script data-main="js/config.js" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.15/require.js">     
-        </script>
-
-
-    
-       
+      
+      
+        </script-->
 
     </body>
 </html>

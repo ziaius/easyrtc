@@ -66,14 +66,14 @@
 
 		
         </style>
-        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
 	</head>
 
 	<body>
 
 		<div id="top">
-			<iframe  name="audiovideo" src="/multiparty.html" width="100%" height="100%" scrolling="no"></iframe>
+			<iframe  name="audiovideo" class="audiovideo" width="100%" height="100%" scrolling="no"></iframe>
 		</div>
 
 		<div id="wrapper" class="room">
@@ -102,6 +102,12 @@
 
 
 			  $( '.leftcolumn' ).attr( "src", "/data_channel_messaging.html" );
+
+			  if (window.mozRTCPeerConnection || window.webkitRTCPeerConnection) {
+			    $( '.audiovideo' ).attr( "src", "/multiparty.html" ); //chrome/opera/firefox
+			  }else{
+			    $( '.audiovideo' ).attr( "src", "/multiparty_noCS.html" ); //IE, Safari
+			  }
 
 		</script> 
 		
